@@ -11,6 +11,7 @@ The implementation was done using [GNU Octave](https://www.gnu.org/software/octa
 Before starting to implement any learning algorithm, it is always good to visualize the data if possible. The figure below displays the historical data where the axes are the two exam scores, and the positive and negative examples are shown with different markers.
 
 ![Ex1-Ex2](https://i.imgur.com/DpjBPmU.png)
+*Figure 1: Training data*
 
 ## Sigmoid function
 Before we start with the actual cost function, we recall that the logistic regression hypthesis is defined as:
@@ -65,4 +66,31 @@ end
 
 The output of the ex2.m shows now correct values:
 ![cmd1](https://i.imgur.com/jN3d70p.png)
+
+## Optimizing using `fminunc`
+
+Octave’s fminunc is an optimization solver that finds the minimum of an unconstrained function. For logistic regression, we want to optimize the cost function J(θ) with parameters θ.
+For this purpose we will use `fminunc` to find the best parameters θ for the logistic regression cost function, given a fixed dataset (of X and y values). We will pass to `fminunc` the following inputs:
+* The initial values of the parameters we are trying to optimize.
+* A function that, when given the training set and a particular θ, computes the logistic regression cost and gradient with respect to θ for the dataset (X, y)
+* Options for `fminunc`
+
+```matlab
+%  Set options for fminunc
+options = optimset('GradObj', 'on', 'MaxIter', 400);
+
+%  Run fminunc to obtain the optimal theta
+%  This function will return theta and the cost 
+[theta, cost] = fminunc(@(t)(costFunction(t, X, y)), initial_theta, options);
+```
+In this code snippet, we first defined the options to be used with fminunc. Specifically, we set the GradObj option to on, which tells fminunc that our function returns both the cost and the gradient. This allows fminunc to use the gradient when minimizing the function. Furthermore, we set the MaxIter option to 400, so that fminunc will run for at most 400 steps before it terminates.
+To specify the actual function we are minimizing, we use a "short-hand" for specifying functions with the @(t) ( costFunction(t, X, y) ) . This creates a function, with argument t, which calls your costFunction. This allows us to wrap the costFunction for use with fminunc. If the costFunction was implemented correctly, fminunc will converge on the right optimization parameters and return the final values of the cost and θ. Notice that by using fminunc, we did not have to write any loops yourself, or set a learning rate like you did for gradient descent. This is all done by fminunc: we only needed to provide a function calculating the cost and the gradient.
+Once fminunc completes, ex2.m will call our costFunction function using the optimal parameters of θ. 
+We can see from the command promput output that the cost at theta is about 0.203. This final θ value will then be used to plot the decision boundary on the training data.
+
+![decision boundary](https://i.imgur.com/PS5pWCZ.png)
+*Figure 2: Traning data with Decision boundary*
+
+
+
 
