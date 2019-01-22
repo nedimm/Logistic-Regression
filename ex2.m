@@ -45,7 +45,7 @@ ylabel('Exam 2 score')
 legend('Admitted', 'Not admitted')
 hold off;
 
-fprintf('\nProgram paused. Press enter to continue.\n');
+fprintf('\nProgram paused. Press enter to continue.\n\n');
 pause;
 
 
