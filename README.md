@@ -33,7 +33,9 @@ function g = sigmoid(z)
 end
 ```
 Testing the function on the command line gives us:
+
 ![testing sigmoid](https://i.imgur.com/7pUGnL2.png)
+
 For large positive values of x, the sigmoid is close to 1, while for large negative values, the sigmoid is close to 0. Evaluating sigmoid(0) gives us exactly 0.5. This code works also with vectors and matrices. For a matrix, the function performs the sigmoid function on every element.
 
 ## Cost function and gradient
@@ -65,6 +67,7 @@ end
 ```
 
 The output of the ex2.m shows now correct values:
+
 ![cmd1](https://i.imgur.com/jN3d70p.png)
 
 ## Optimizing using `fminunc`
@@ -91,6 +94,28 @@ We can see from the command promput output that the cost at theta is about 0.203
 ![decision boundary](https://i.imgur.com/PS5pWCZ.png)
 *Figure 2: Traning data with Decision boundary*
 
+## Evaluating logistic regression
+
+After learning the parameters, we can use the model to predict whether a particular student will be admitted. For a student with an Exam 1 score of 45 and an Exam 2 score of 85, we should expect to see an admission probability of 0.776.
+Another way to evaluate the quality of the parameters we have found is to see how well the learned model predicts on our training set. 
+
+```matlab
+function p = predict(theta, X)
+  %PREDICT Predict whether the label is 0 or 1 using learned logistic 
+  %regression parameters theta
+  %   p = PREDICT(theta, X) computes the predictions for X using a 
+  %   threshold at 0.5 (i.e., if sigmoid(theta'*x) >= 0.5, predict 1)
+
+  m = size(X, 1); % Number of training examples
+  p = sigmoid(X * theta)>=0.5 ;
+end
+```
+
+The predict function will produce "1" or "0" predictions given a dataset and a learned parameter vector θ.
+The `ex2.m` script will proceed to report the training accuracy of your classifier by computing the
+percentage of examples it got correct.
+
+![output](https://i.imgur.com/MVgYKtk.png)
 
 
 
